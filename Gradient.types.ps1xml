@@ -1,0 +1,23 @@
+<!-- Generated with EZOut 2.0.6: Install-Module EZOut or https://github.com/StartAutomating/EZOut -->
+<Types>
+  <Type>
+    <Name>Gradient</Name>
+    <Members>
+      <ScriptProperty>
+        <Name>GradientTypePattern</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets the gradient type pattern
+.DESCRIPTION
+    Gets the regular expression used to identify a gradient type
+.EXAMPLE
+    Get-Gradiant '#4488ff' ,'#224488' |
+       Select-Object -Expand GradientTypePattern
+#&gt;
+'(?:repeating-)?(?&gt;conic|linear|radial)(?:-gradient)?$'
+                    </GetScriptBlock>
+      </ScriptProperty>
+    </Members>
+  </Type>
+</Types>
