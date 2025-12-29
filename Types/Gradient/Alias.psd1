@@ -1,0 +1,3 @@
+@{
+    GradientTypes = 'GradientType'
+}
