@@ -7,6 +7,18 @@
         <Name>GradientTypes</Name>
         <ReferencedMemberName>GradientType</ReferencedMemberName>
       </AliasProperty>
+      <ScriptMethod>
+        <Name>ToString</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Stringifies the gradient
+.DESCRIPTION
+    Gets the gradient as a string.  By default, returns the CSS gradient.
+#&gt;
+return "$($this.CSS)"
+                    </Script>
+      </ScriptMethod>
       <ScriptProperty>
         <Name>CSS</Name>
         <GetScriptBlock>
