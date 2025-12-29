@@ -3,6 +3,18 @@
   <Type>
     <Name>Gradient</Name>
     <Members>
+      <MemberSet>
+        <Name>PSStandardMembers</Name>
+        <Members>
+          <PropertySet>
+            <Name>DefaultDisplayPropertySet</Name>
+            <ReferencedProperties>
+              <Name>Input</Name>
+              <Name>CSS</Name>
+            </ReferencedProperties>
+          </PropertySet>
+        </Members>
+      </MemberSet>
       <AliasProperty>
         <Name>GradientTypes</Name>
         <ReferencedMemberName>GradientType</ReferencedMemberName>
@@ -145,6 +157,11 @@ $offsetStep = 1 / ($gradientValues.Count - 1)
 ) -join [Environment]::NewLine
                     </GetScriptBlock>
       </ScriptProperty>
+      <NoteProperty>
+        <Name>DefaultDisplay</Name>
+        <Value>Input
+CSS</Value>
+      </NoteProperty>
     </Members>
   </Type>
 </Types>
