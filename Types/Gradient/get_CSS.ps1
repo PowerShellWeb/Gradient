@@ -21,6 +21,6 @@ if (-not $gradientTypes) { $gradientTypes = 'radial-gradient'}
     "$gradientType($(
         @(
             $gradientValues     
-        ) -join ', '
+        ) -join (', ' + [Environment]::NewLine + (' ' * 2))
     ))"
 }) -join ', '
