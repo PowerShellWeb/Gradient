@@ -129,6 +129,23 @@ return $foundTypes
                     </GetScriptBlock>
       </ScriptProperty>
       <ScriptProperty>
+        <Name>HTML</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets the gradient as HTML
+.DESCRIPTION
+    Gets the gradient as a `&lt;div&gt;` element with a style attribute.
+#&gt;
+$styleAttribute = [Web.HttpUtility]::HtmlAttributeEncode(@(
+    "width:100%"
+    "height:100%"
+    "background-image:$($this.CSS)"
+) -join ';')
+"&lt;div style='$styleAttribute'&gt;&lt;/div&gt;"
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
         <Name>JSON</Name>
         <GetScriptBlock>
                         &lt;#
