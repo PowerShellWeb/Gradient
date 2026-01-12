@@ -1,3 +1,13 @@
+## Gradient 0.1.1:
+
+* Better Gradient Stacking (#21)
+* Gradient.css joins with newlines (#20)
+* Gradient.json returns the gradient as json (for easy Element.animate) (#6)
+* Gradient.html returns the gradient as an HTML fragment (#22)
+* Gradient.ToString is more flexible (#23)
+
+---
+
 ## Gradient 0.1:
 
 > Initial Gradient Module (#1)
