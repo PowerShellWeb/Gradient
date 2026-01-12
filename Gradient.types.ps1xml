@@ -128,6 +128,28 @@ return $foundTypes
                     </GetScriptBlock>
       </ScriptProperty>
       <ScriptProperty>
+        <Name>JSON</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets a json gradient
+.DESCRIPTION
+    Gets the gradient in JavaScript Object Notation (JSON)
+
+    This describes the gradient as a background-image with the css inline in a string.
+
+    This should work seamlessly with
+    [Element.animate](https://developer.mozilla.org/en-US/docs/Web/API/Element/animate)
+    to allow you to animate a gradient change.
+.LINK
+    https://developer.mozilla.org/en-US/docs/Web/API/Element/animate
+#&gt;
+@{
+    'background-image' = "$($this.CSS)"
+} | ConvertTo-Json 
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
         <Name>SVG</Name>
         <GetScriptBlock>
                         &lt;#
