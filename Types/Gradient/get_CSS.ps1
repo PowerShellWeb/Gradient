@@ -23,6 +23,7 @@ $gradientValues = @(foreach ($in in $this.input) {
     }
 })
 
+$ShallowJoiner = (', ' + [Environment]::NewLine + (' ' * 2))
 if ($gradientValues) {
     if (-not $gradientTypes) { $gradientTypes = 'radial-gradient'}
     $gradientCss = @(foreach ($gradientType in $gradientTypes) {
@@ -31,7 +32,7 @@ if ($gradientValues) {
             $(
                 @(
                     $gradientValues     
-                ) -join (', ' + [Environment]::NewLine + (' ' * 2))
+                ) -join $ShallowJoiner
             )
         ))"
     }) -join ', '    
