@@ -27,7 +27,32 @@
     Stringifies the gradient
 .DESCRIPTION
     Gets the gradient as a string.  By default, returns the CSS gradient.
+
+    If any arguments are passed and are properties of this object,
+    they will be returned as strings.
+.EXAMPLE
+    "$(gradient '#4488ff' '#224488')"
+.EXAMPLE
+    (gradient '#4488ff' '#224488').ToString("html")
 #&gt;
+param()
+
+if ($args) {
+    $anymatching = @(foreach ($arg in $args) {
+        $thisArg = $this.$arg
+        if ($thisArg) {
+            if ($thisArg -is [xml]) {
+                $thisArg.Outerxml
+            } else {
+                $thisArg
+            }
+        }
+    })
+    if ($anymatching) {
+        return ($anymatching -as 'string[]' -join [Environment]::NewLine)
+    }
+}
+
 return "$($this.CSS)"
                     </Script>
       </ScriptMethod>
@@ -46,20 +71,45 @@ return "$($this.CSS)"
 param()
 # Get our gradient type
 $gradientTypes = $this.GradientTypes
+
+$gradientStack = @()
+
 $gradientValues = @(foreach ($in in $this.input) {
+    if ($in.pstypenames -eq 'gradient') {
+        $gradientStack += $in
+        continue
+    }
     if ($in -notmatch $this.GradientTypePattern) {
         $in
     }
 })
 
-if (-not $gradientTypes) { $gradientTypes = 'radial-gradient'}        
-@(foreach ($gradientType in $gradientTypes) {
-    "$gradientType($(
-        @(
-            $gradientValues     
-        ) -join ', '
-    ))"
-}) -join ', '
+$ShallowJoiner = (', ' + [Environment]::NewLine + (' ' * 2))
+if ($gradientValues) {
+    if (-not $gradientTypes) { $gradientTypes = 'radial-gradient'}
+    $gradientCss = @(foreach ($gradientType in $gradientTypes) {
+        "$gradientType($(
+            [Environment]::NewLine + (' ' * 2) + 
+            $(
+                @(
+                    $gradientValues     
+                ) -join $ShallowJoiner
+            )
+        ))"
+    }) -join ', '    
+}
+if ($gradientStack) {
+    $deepJoiner = (', ' + [Environment]::NewLine)
+    if (-not $gradientValues) {
+        $gradientStack -join $deepJoiner
+    } else {
+        @($gradientStack;$gradientCss) -join $deepJoiner
+    }
+} elseif ($gradientValues) {
+    $gradientCss
+}
+
+
                     </GetScriptBlock>
       </ScriptProperty>
       <ScriptProperty>
@@ -101,6 +151,45 @@ return $foundTypes
        Select-Object -Expand GradientTypePattern
 #&gt;
 '(?:repeating-)?(?&gt;conic|linear|radial)(?:-gradient)?$'
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>HTML</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets the gradient as HTML
+.DESCRIPTION
+    Gets the gradient as a `&lt;div&gt;` element with a style attribute.
+#&gt;
+$styleAttribute = [Web.HttpUtility]::HtmlAttributeEncode(@(
+    "width:100%"
+    "height:100%"
+    "background-image:$($this.CSS)"
+) -join ';')
+"&lt;div style='$styleAttribute'&gt;&lt;/div&gt;"
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>JSON</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets a json gradient
+.DESCRIPTION
+    Gets the gradient in JavaScript Object Notation (JSON)
+
+    This describes the gradient as a background-image with the css inline in a string.
+
+    This should work seamlessly with
+    [Element.animate](https://developer.mozilla.org/en-US/docs/Web/API/Element/animate)
+    to allow you to animate a gradient change.
+.LINK
+    https://developer.mozilla.org/en-US/docs/Web/API/Element/animate
+#&gt;
+@{
+    'background-image' = "$($this.CSS)"
+} | ConvertTo-Json 
                     </GetScriptBlock>
       </ScriptProperty>
       <ScriptProperty>
